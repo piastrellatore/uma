@@ -12,6 +12,7 @@
   
     <groupId>com.real.uma</groupId>
     <artifactId>docs</artifactId>
+    <name>Uma::Docs</name>
     
     <build>
         <finalName>uma-docs</finalName>
