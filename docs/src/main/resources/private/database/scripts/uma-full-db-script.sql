@@ -1,12 +1,6 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
-
-DROP SCHEMA IF EXISTS `uma` ;
-CREATE SCHEMA IF NOT EXISTS `uma` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
-USE `uma` ;
-
 -- -----------------------------------------------------
 -- Table `uma`.`User`
 -- -----------------------------------------------------
@@ -23,6 +17,8 @@ CREATE  TABLE IF NOT EXISTS `uma`.`User` (
   `confirmed` TINYINT(1)  NULL DEFAULT false ,
   `loginCounter` DECIMAL(10,0)  NULL DEFAULT 0 ,
   `lastLoginDate` TIMESTAMP NULL ,
+  `expirationDate` TIMESTAMP NULL ,
+  `creationDate` TIMESTAMP NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -36,6 +32,7 @@ CREATE  TABLE IF NOT EXISTS `uma`.`Role` (
   `id` DECIMAL(10,0)  NOT NULL ,
   `name` VARCHAR(50) NOT NULL ,
   `description` VARCHAR(250) NULL ,
+  `creationDate` TIMESTAMP NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 COMMENT = 'The roles table.';
@@ -49,6 +46,7 @@ CREATE  TABLE IF NOT EXISTS `uma`.`Group` (
   `id` DECIMAL(10,0)  NOT NULL ,
   `name` VARCHAR(100) NOT NULL ,
   `description` VARCHAR(100) NULL ,
+  `creationDate` TIMESTAMP NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -111,24 +109,24 @@ CREATE INDEX `fk_RoleGroup_Group1` ON `uma`.`RoleGroup` (`groupId` ASC) ;
 
 CREATE  TABLE IF NOT EXISTS `uma`.`UserGroup` (
   `id` INT NOT NULL ,
-  `Group_id` DECIMAL(10,0)  NOT NULL ,
-  `User_id` DECIMAL(10,0)  NOT NULL ,
-  PRIMARY KEY (`id`, `Group_id`, `User_id`) ,
+  `groupId` DECIMAL(10,0)  NOT NULL ,
+  `userId` DECIMAL(10,0)  NOT NULL ,
+  PRIMARY KEY (`id`, `groupId`, `userId`) ,
   CONSTRAINT `fk_UserGroup_Group1`
-    FOREIGN KEY (`Group_id` )
+    FOREIGN KEY (`groupId` )
     REFERENCES `uma`.`Group` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_UserGroup_User1`
-    FOREIGN KEY (`User_id` )
+    FOREIGN KEY (`userId` )
     REFERENCES `uma`.`User` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_UserGroup_Group1` ON `uma`.`UserGroup` (`Group_id` ASC) ;
+CREATE INDEX `fk_UserGroup_Group1` ON `uma`.`UserGroup` (`groupId` ASC) ;
 
-CREATE INDEX `fk_UserGroup_User1` ON `uma`.`UserGroup` (`User_id` ASC) ;
+CREATE INDEX `fk_UserGroup_User1` ON `uma`.`UserGroup` (`userId` ASC) ;
 
 
 -- -----------------------------------------------------
