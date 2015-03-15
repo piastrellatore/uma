@@ -144,6 +144,7 @@ CREATE  TABLE IF NOT EXISTS `uma`.`Address` (
   `business` TINYINT(1)  NULL DEFAULT false ,
   `priority` INT NULL DEFAULT 0 ,
   `userId` DECIMAL(10,0)  NOT NULL ,
+  `creationDate` TIMESTAMP NULL ,   
   PRIMARY KEY (`id`, `userId`) ,
   CONSTRAINT `fk_Address_User1`
     FOREIGN KEY (`userId` )
